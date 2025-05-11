@@ -12,12 +12,15 @@ services:
       timeout: 3s
       retries: 3
     volumes:
+      - ./data:/opt/spark/data
+      - ./iot_stream:/opt/spark/data/iot_stream
       - ./book_data:/opt/spark/data
       - ./spark_apps:/opt/spark/apps
       - spark-logs:/opt/spark/spark-events
     env_file:
       - .env.spark
     ports:
+      - "4040:4040"
       - "9090:8080" # Spark master Web UI
       - "7077:7077" # Spark master RPC
 
@@ -30,6 +33,9 @@ services:
     env_file:
       - .env.spark
     volumes:
+      - ./iot_stream:/opt/spark/data/iot_stream
+      - ./book_data:/opt/spark/data
+      - ./spark_apps:/opt/spark/apps
       - spark-logs:/opt/spark/spark-events
     ports:
       - "18080:18080" # History server Web UI
@@ -43,6 +49,7 @@ services:
     env_file:
       - .env.spark
     volumes:
+      - ./iot_stream:/opt/spark/data/iot_stream
       - ./book_data:/opt/spark/data
       - ./spark_apps:/opt/spark/apps
       - spark-logs:/opt/spark/spark-events
